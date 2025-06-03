@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Designer Tools Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: #f5f8fc;
+      color: #2e3a59;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #1e40af;
+      color: white;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 2rem;
+      letter-spacing: 1px;
+      box-shadow: 0 3px 8px rgb(30 64 175 / 0.3);
+      user-select: none;
+    }
+
+    /* Container layout */
+    .container {
+      display: flex;
+      flex: 1;
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+    }
+
+    /* Sidebar styles */
+    nav {
+      width: 220px;
+      background: #2563eb;
+      display: flex;
+      flex-direction: column;
+      padding-top: 1rem;
+      box-shadow: 2px 0 8px rgb(37 99 235 / 0.3);
+    }
+    nav button {
+      background: transparent;
+      border: none;
+      color: #bfdbfe;
+      padding: 1rem 1.5rem;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-left: 4px solid transparent;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    nav button:hover {
+      background: #1e3a8a;
+      color: white;
+    }
+    nav button.active {
+      background: white;
+      color: #2563eb;
+      border-left: 4px solid #2563eb;
+      font-weight: 700;
+      box-shadow: inset 5px 0 8px rgb(37 99 235 / 0.4);
+    }
+
+    /* Icon placeholders for each category */
+    nav button svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Main content */
+    main {
+      flex: 1;
+      padding: 2rem 2.5rem;
+      overflow-y: auto;
+      background: #f9fafb;
+    }
+
+    /* Section styling */
+    .section {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .section.active {
+      display: block;
+    }
+
+    /* Tools cards grid */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+      gap: 1.6rem;
+    }
+
+    /* Card styles */
+    .tool-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem 1.2rem;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 140px;
+    }
+    .tool-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgb(37 99 235 / 0.25);
+    }
+    .tool-card a {
+      color: #2563eb;
+      font-weight: 600;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: color 0.2s;
+      line-height: 1.3;
+    }
+    .tool-card a:hover {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+    .tool-desc {
+      margin-top: 0.6rem;
+      color: #475569;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      flex-grow: 1;
+    }
+
+    /* Section titles */
+    .section h2 {
+      color: #2563eb;
+      margin-bottom: 1.3rem;
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 0.3rem;
+      user-select: none;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        margin: 1rem;
+      }
+      nav {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0.5rem 0;
+        box-shadow: none;
+      }
+      nav button {
+        flex: 1 0 auto;
+        text-align: center;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        padding: 0.7rem 0.8rem;
+      }
+      nav button.active {
+        border-left: none;
+        border-bottom: 3px solid #2563eb;
+        box-shadow: none;
+      }
+      main {
+        padding: 1.5rem 1rem;
+      }
+      .tool-card {
+        height: auto;
+        padding: 1rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Designer Tools Hub</header>
+
+  <div class="container">
+    <nav role="navigation" aria-label="Category Navigation">
+      <button class="active" data-section="graphic" aria-current="page">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7v9l10 5 10-5V7l-10-5zm0 2.18L18.42 8 12 11.82 5.58 8 12 4.18zM4 9.5v6.88L12 19.82l8-3.44V9.5L12 13.82 4 9.5z"/></svg>
+        Graphic Design
+      </button>
+      <button data-section="photo">
+        <svg viewBox="0 0 24 24"><path d="M20 5h-3.17l-1.84-2.46a.996.996 0 00-1.66 0L11.17 5H8c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 12H8V7h12v10zM12 10a3 3 0 11.001 6.001A3 3 0 0112 10z"/></svg>
+        Photo Editing
+      </button>
+      <button data-section="video">
+        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 4v-11l-4 4z"/></svg>
+        Video Editing
+      </button>
+      <button data-section="modeling">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5zm0 2.18L18.42 8 12 11.82 5.58 8 12 4.18zM12 14l-4-2.5v5l4 2.5 4-2.5v-5L12 14z"/></svg>
+        3D Modeling
+      </button>
+      <button data-section="animation">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5zm1 14.5v-5l4 2.5-4 2.5z"/></svg>
+        3D Animation
+      </button>
+      <button data-section="textures">
+        <svg viewBox="0 0 24 24"><path d="M5 3v18h14V3H5zm12 16H7v-2h10v2zm0-4H7v-2h10v2zm0-4H7V9h10v2zm0-4H7V5h10v2z"/></svg>
+        Textures
+      </button>
+    </nav>
+
+    <main>
+      <!-- Graphic Design -->
+      <section id="graphic" class="section active" aria-label="Graphic Design Tools">
+        <h2>Graphic Design Tools</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <a href="https://remove.bg" target="_blank" rel="noopener noreferrer" title="Remove Background">Remove.bg</a>
+            <p class="tool-desc">Automatically remove backgrounds from images easily and quickly.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://colorhunt.co" target="_blank" rel="noopener noreferrer" title="Color Hunt">Color Hunt</a>
+            <p class="tool-desc">Curated color palettes to inspire your design projects.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" title="Canva">Canva</a>
+            <p class="tool-desc">User-friendly graphic design platform for creating stunning visuals.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://coolors.co" target="_blank" rel="noopener noreferrer" title="Coolors">Coolors</a>
+            <p class="tool-desc">Generate beautiful color schemes with this palette generator.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.adobe.com/products/photoshop.html" target="_blank" rel="noopener noreferrer" title="Adobe Photoshop">Adobe Photoshop</a>
+            <p class="tool-desc">Industry-standard photo editing and graphic design software.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Photo Editing -->
+      <section id="photo" class="section" aria-label="Photo Editing Tools">
+        <h2>Photo Editing Tools</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <a href="https://pixlr.com" target="_blank" rel="noopener noreferrer" title="Pixlr">Pixlr</a>
+            <p class="tool-desc">Online photo editor with advanced tools and easy interface.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.adobe.com/products/lightroom.html" target="_blank" rel="noopener noreferrer" title="Adobe Lightroom">Adobe Lightroom</a>
+            <p class="tool-desc">Powerful photo organizer and editor for professionals.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.fotor.com" target="_blank" rel="noopener noreferrer" title="Fotor">Fotor</a>
+            <p class="tool-desc">All-in-one photo editing and design tool with easy sharing.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://snapseed.online" target="_blank" rel="noopener noreferrer" title="Snapseed Online">Snapseed</a>
+            <p class="tool-desc">Google's powerful mobile and web photo editing app.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.beautyplus.com" target="_blank" rel="noopener noreferrer" title="BeautyPlus">BeautyPlus</a>
+            <p class="tool-desc">Enhance portraits with AI beauty and retouching tools.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Video Editing -->
+      <section id="video" class="section" aria-label="Video Editing Tools">
+        <h2>Video Editing Tools</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <a href="https://www.adobe.com/products/premiere.html" target="_blank" rel="noopener noreferrer" title="Adobe Premiere Pro">Adobe Premiere Pro</a>
+            <p class="tool-desc">Professional video editing software used worldwide.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://hitfilm.com/hitfilm-express" target="_blank" rel="noopener noreferrer" title="HitFilm Express">HitFilm Express</a>
+            <p class="tool-desc">Free powerful video editing and visual effects software.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.kdenlive.org" target="_blank" rel="noopener noreferrer" title="Kdenlive">Kdenlive</a>
+            <p class="tool-desc">Open-source video editor for Linux, Windows, and macOS.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.daVinciresolve.com" target="_blank" rel="noopener noreferrer" title="DaVinci Resolve">DaVinci Resolve</a>
+            <p class="tool-desc">Professional video editing and color grading tool.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://clipchamp.com" target="_blank" rel="noopener noreferrer" title="Clipchamp">Clipchamp</a>
+            <p class="tool-desc">Easy browser-based video editor for quick projects.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3D Modeling -->
+      <section id="modeling" class="section" aria-label="3D Modeling Tools">
+        <h2>3D Modeling Tools</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <a href="https://www.blender.org" target="_blank" rel="noopener noreferrer" title="Blender">Blender</a>
+            <p class="tool-desc">Free and open-source 3D modeling and animation software.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.autodesk.com/products/maya/overview" target="_blank" rel="noopener noreferrer" title="Autodesk Maya">Autodesk Maya</a>
+            <p class="tool-desc">Industry-leading 3D modeling and animation suite.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.autodesk.com/products/3ds-max/overview" target="_blank" rel="noopener noreferrer" title="3ds Max">3ds Max</a>
+            <p class="tool-desc">3D modeling, animation, and rendering software for artists.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.sketchup.com" target="_blank" rel="noopener noreferrer" title="SketchUp">SketchUp</a>
+            <p class="tool-desc">Intuitive 3D modeling software great for beginners and pros.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.zbrushcentral.com" target="_blank" rel="noopener noreferrer" title="ZBrush">ZBrush</a>
+            <p class="tool-desc">Advanced digital sculpting tool for detailed 3D models.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3D Animation -->
+      <section id="animation" class="section" aria-label="3D Animation Tools">
+        <h2>3D Animation Tools</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <a href="https://www.blender.org" target="_blank" rel="noopener noreferrer" title="Blender Animation">Blender</a>
+            <p class="tool-desc">Complete 3D suite including powerful animation features.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.autodesk.com/products/maya/overview" target="_blank" rel="noopener noreferrer" title="Autodesk Maya Animation">Autodesk Maya</a>
+            <p class="tool-desc">Professional-grade 3D animation and rigging tools.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.motionbuilder.com" target="_blank" rel="noopener noreferrer" title="Autodesk MotionBuilder">MotionBuilder</a>
+            <p class="tool-desc">3D character animation software for motion capture editing.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://mixamo.com" target="_blank" rel="noopener noreferrer" title="Mixamo">Mixamo</a>
+            <p class="tool-desc">Free online 3D animation and rigging service by Adobe.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.clara.io" target="_blank" rel="noopener noreferrer" title="Clara.io">Clara.io</a>
+            <p class="tool-desc">Browser-based 3D modeling, animation, and rendering.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Textures -->
+      <section id="textures" class="section" aria-label="Textures Resources">
+        <h2>Textures Resources</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <a href="https://cc0textures.com" target="_blank" rel="noopener noreferrer" title="CC0 Textures">CC0 Textures</a>
+            <p class="tool-desc">High-quality, free-to-use PBR textures for 3D work.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.texturehaven.com" target="_blank" rel="noopener noreferrer" title="Texture Haven">Texture Haven</a>
+            <p class="tool-desc">Completely free, high quality textures with no restrictions.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://www.poliigon.com" target="_blank" rel="noopener noreferrer" title="Poliigon">Poliigon</a>
+            <p class="tool-desc">Professional textures and HDRIs for 3D artists.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://3dtextures.me" target="_blank" rel="noopener noreferrer" title="3D Textures">3D Textures</a>
+            <p class="tool-desc">Free textures with PBR maps, available for any project.</p>
+          </div>
+          <div class="tool-card">
+            <a href="https://ambientcg.com" target="_blank" rel="noopener noreferrer" title="AmbientCG">AmbientCG</a>
+            <p class="tool-desc">Public domain PBR materials and textures collection.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Tabs navigation logic
+    const buttons = document.querySelectorAll('nav button');
+    const sections = document.querySelectorAll('main .section');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active states
+        buttons.forEach(b => {
+          b.classList.remove('active');
+          b.removeAttribute('aria-current');
+        });
+        sections.forEach(sec => sec.classList.remove('active'));
+
+        // Add active to clicked button
+        btn.classList.add('active');
+        btn.setAttribute('aria-current', 'page');
+
+        // Show associated section
+        const sectionId = btn.getAttribute('data-section');
+        document.getElementById(sectionId).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
